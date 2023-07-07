@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const path = require('path');
+const methodOverride = require("method-override");
 const mongoose = require('mongoose');
 
 const User = require('./models/newCommentModel');
@@ -16,6 +17,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/newComments')
 app.set("view engine", "ejs");
 app.set('views', path.join(__dirname, "views"))
 
+app.use(methodOverride("_method"));
 app.use(express.urlencoded({ extended: true }));
 
 // Default HOMEPAGE!
@@ -51,6 +53,18 @@ app.get("/comments/:id/edit", async (req,res) => {
     const userProfile =  await User.findById(id);
     res.render("editUser", { userProfile })
 });
+
+app.put("/comments/:id", async (req,res) => {
+    const {id} = req.params;
+    const userProfile =  await User.findByIdAndUpdate(id, req.body, {runValidators: true});
+    res.redirect("/comments")
+});
+
+app.delete("/comments/:id", async (req,res) => {
+    const {id} = req.params;
+    const deletedUser  =  await User.findByIdAndDelete(id);
+    res.redirect("/comments");
+})
 
 app.listen('3000', () => {
     console.log("Your are listening to port 3000");

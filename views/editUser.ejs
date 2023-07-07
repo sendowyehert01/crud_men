@@ -2,13 +2,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Edit User</title>
 </head>
 <body>
-    <form action="/comments/<%= userProfile._id %>" method="POST">
+    <form action="/comments/<%= userProfile._id %>?_method=PUT" method="POST">
         <input type="text" name="username" value="<%= userProfile.username %>">
         <input type="text" name="comments" value="<%= userProfile.comments %>">
-        <button>Submit</button>
+        <button>Submit</button> 
     </form>
 </body>
 </html>
